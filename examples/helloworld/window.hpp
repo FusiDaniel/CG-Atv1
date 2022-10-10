@@ -14,9 +14,6 @@ protected:
   void onDestroy() override;
 
 private:
-  enum class GameState { Day, Night };
-  GameState m_State;
-
   bool m_isDay{true};
 
   glm::ivec2 m_viewportSize{};

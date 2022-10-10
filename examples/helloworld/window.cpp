@@ -37,8 +37,8 @@ void Window::onCreate() {
 
 void Window::restartUI() {
   abcg::glClear(GL_COLOR_BUFFER_BIT);
-  m_dayColor = {0.15f, 0.463f, 1.0f, .0f};
-  m_nightColor = {0.0f, 0.0f, 0.262f, .0f};
+  m_dayColor = {0.15f, 0.463f, 1.0f, 1.0f};
+  m_nightColor = {0.0f, 0.0f, 0.262f, 1.0f};
   sides = 4;
   speed = 3.0f;
 }
@@ -66,8 +66,7 @@ void Window::onPaint() {
                      m_nightColor.at(3));
   }
   // Clear the color buffer
-  abcg::glClear(GL_COLOR_BUFFER_BIT);
-
+  abcg::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
   if (animation_frame < 2000) {
     

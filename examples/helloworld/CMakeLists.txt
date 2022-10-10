@@ -1,4 +1,4 @@
-project(daynightmode)
+project(helloworld)
 
 add_executable(${PROJECT_NAME} main.cpp window.cpp)
 
