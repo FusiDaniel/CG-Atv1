@@ -32,12 +32,6 @@ void Window::onCreate() {
       {{.source = vertexShader, .stage = abcg::ShaderStage::Vertex},
        {.source = fragmentShader, .stage = abcg::ShaderStage::Fragment}});
 
-  // abcg::glClearColor(0, 0, 0, 1);
-  // abcg::glClear(GL_COLOR_BUFFER_BIT);
-
-  m_randomEngine.seed(
-      std::chrono::steady_clock::now().time_since_epoch().count());
-
   restartUI();
 }
 
@@ -45,7 +39,6 @@ void Window::restartUI() {
   abcg::glClear(GL_COLOR_BUFFER_BIT);
   m_dayColor = {0.15f, 0.463f, 1.0f, .0f};
   m_nightColor = {0.0f, 0.0f, 0.262f, .0f};
-  // TODO: Reset Colors and Sliders
 }
 
 void Window::onResize(glm::ivec2 const &size) {
@@ -74,7 +67,7 @@ void Window::onPaint() {
   abcg::glClear(GL_COLOR_BUFFER_BIT);
 
   
-  if (animation_frame < 200) {
+  if (animation_frame < 2000) {
     
     if (m_timer.elapsed() < m_delay / 1000.0)
       animation_frame = animation_frame + 2;
@@ -86,7 +79,7 @@ void Window::onPaint() {
 
     abcg::glUseProgram(m_program);
 
-    auto const scale{animation_frame/100.0f};
+    auto const scale{5 * speed * animation_frame/1000.0f};
     auto const scaleLocation{abcg::glGetUniformLocation(m_program, "scale")};
     abcg::glUniform1f(scaleLocation, scale);
 
@@ -97,8 +90,9 @@ void Window::onPaint() {
 
     abcg::glUseProgram(0);
 
-    if (animation_frame >= 200) {
+    if (animation_frame >= 2000 || scale >= 2.00f) {
         m_isDay = !m_isDay;
+        animation_frame = 2001;
       }
   }
 }
@@ -108,26 +102,34 @@ void Window::onPaintUI() {
   {
     // Window begin
     ImGui::Begin(" ");
-    ImGui::Text("Animation frame %d\nMode: %s", animation_frame, m_isDay ? "Day" : "Night");
+    ImGui::Text("Animation frame %d\nMode: %s", animation_frame == 2001 ? 0 : animation_frame, m_isDay ? "Day" : "Night");
+    
+    ImGui::Spacing();
     ImGui::Text("Day Mode Color:");
     ImGui::SliderFloat("Day_R", &m_dayColor.at(0), 0.0f, 1.0f);
     ImGui::SliderFloat("Day_G", &m_dayColor.at(1), 0.0f, 1.0f);
     ImGui::SliderFloat("Day_B", &m_dayColor.at(2), 0.0f, 1.0f);
 
+    ImGui::Spacing();
     ImGui::Text("Night Mode Color:");
     ImGui::SliderFloat("Night_R", &m_nightColor.at(0), 0.0f, 1.0f);
     ImGui::SliderFloat("Night_G", &m_nightColor.at(1), 0.0f, 1.0f);
     ImGui::SliderFloat("Night_B", &m_nightColor.at(2), 0.0f, 1.0f);
 
-    ImGui::SliderInt("Sides", &sides, 3, 50);
-    ImGui::SliderFloat("Speed", &speed, 1.00f, 10.00f);
+    ImGui::Spacing();
+    ImGui::Text("Animation Properties:");
+    ImGui::SliderInt("Sides", &sides, 4, 50);
+    ImGui::SliderFloat("Speed", &speed, 1.00f, 5.00f);
 
 
     if (ImGui::Button("Change Mode", ImVec2(-1, 30))) {
+      if (animation_frame < 2001) {
+        m_isDay = !m_isDay;
+      }
       animation_frame = 0;
     }
 
-    if (ImGui::Button("Restart All", ImVec2(-1, 30))) {
+    if (ImGui::Button("Restart Sliders", ImVec2(-1, 30))) {
       restartUI();
     }
 
@@ -135,7 +137,6 @@ void Window::onPaintUI() {
     ImGui::End();
   }
 }
-
 
 void Window::setupModel(int sides) {
   // Release previous resources, if any

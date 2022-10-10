@@ -35,9 +35,9 @@ private:
 
   std::array<float, 4> m_dayColor{0.15f, 0.463f, 1.0f, .0f};
   std::array<float, 4> m_nightColor{0.0f, 0.0f, 0.262f, .0f};
-  int sides{3};
+  int sides{4};
   int animation_frame{0};
-  float speed{1.0};
+  float speed{3.0};
   void restartUI();
 };
 
