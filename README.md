@@ -8,3 +8,4 @@ A transição de cor se baseia numa tela com uma cor A, e uma forma geométrica 
 
 O frame em que a animação se encontra, e a cor atual (Day ou Night), podem ser visualizadas no topo da janela flutuante denominada "Interface".
 
+
