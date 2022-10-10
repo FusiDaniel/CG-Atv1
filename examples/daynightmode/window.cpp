@@ -39,6 +39,8 @@ void Window::restartUI() {
   abcg::glClear(GL_COLOR_BUFFER_BIT);
   m_dayColor = {0.15f, 0.463f, 1.0f, .0f};
   m_nightColor = {0.0f, 0.0f, 0.262f, .0f};
+  sides = 4;
+  speed = 3.0f;
 }
 
 void Window::onResize(glm::ivec2 const &size) {
@@ -101,7 +103,7 @@ void Window::onPaintUI() {
   abcg::OpenGLWindow::onPaintUI();
   {
     // Window begin
-    ImGui::Begin(" ");
+    ImGui::Begin("Interface");
     ImGui::Text("Animation frame %d\nMode: %s", animation_frame == 2001 ? 0 : animation_frame, m_isDay ? "Day" : "Night");
     
     ImGui::Spacing();
